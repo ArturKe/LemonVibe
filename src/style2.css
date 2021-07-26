@@ -1,0 +1,60 @@
+.wraper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+.game_body {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+.game_body__top {
+    height: 30px;
+    background: blueviolet;
+}
+.game_body__counter {
+}
+.game_body__pause {
+}
+.game_body__hearts {
+}
+.game_body__middle {
+    height: 300px;
+    background: rgba(241, 139, 139, 0.632);
+
+}
+.game_body__bottom {
+    height: 30px;
+    background-color: burlywood;
+
+}
+
+.game_body__main {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: chartreuse;
+}
+.game_body__buttons {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+}
+.show{
+    opacity: 1;
+    visibility: visible;
+}
+
+.hide{
+    opacity: 0;
+    visibility: hidden;
+    
+}
+
+.game_body__start_button {
+    display: block;
+}
