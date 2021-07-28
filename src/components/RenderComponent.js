@@ -7,20 +7,48 @@ export class Render extends Component{
         this.counterInit = 0;
         this.counterLose = 0;
         this.gameStart = false;
-        // this.state = true
-        // this.timer
         this.width = 300;
+        this.menuComponent
+        this.menuActive = false
+        this.middleElem
+        this.func
+
         
+        
+    }
+
+    bindMenuEvents(){
+        console.log('Biiiiiind')
+        this.middleElem = document.querySelector('.game_body__pause')
+        this.func = this.menuEvent.bind(this)
+        this.middleElem.addEventListener('click', this.func)
+    }
+
+    menuEvent(e){
+       
+            if(!e.target.classList.contains('basket')){
+                if(!this.menuActive){
+                    this.menuActive = true
+                    console.log('Mennuuu Calll')
+                    this.pauseGame()
+                    this.menuComponent.show()
+                    this.middleElem.removeEventListener('click', this.func)
+
+                }
+
+           }
+
     }
     
     start(){
 
         console.log('Starting')
-       
-        
+        let funcSpawn = this.initDraw.bind(this)
+        let funcUpdate = this.updateCoordinate.bind(this)
+
 
         let spawnTimer = setInterval(()=>{
-            window.requestAnimationFrame(this.initDraw.bind(this))
+            window.requestAnimationFrame(funcSpawn)
             // console.log(spawnTimer)
 
             // if(!this.gameStart){
@@ -31,12 +59,14 @@ export class Render extends Component{
         }, 1200)
 
         let initTimer = setInterval(()=>{
-            window.requestAnimationFrame(this.updateCoordinate.bind(this))
+            window.requestAnimationFrame(funcUpdate)
             
             if(!this.gameStart){
                 console.log("Stop Update Coordinate gameStrat is: " + this.gameStart )
                 clearInterval(initTimer)
                 clearInterval(spawnTimer) 
+                console.log("Init Timer is: " + initTimer)
+                console.log("Init Timer is: " + spawnTimer)
                 
             }
 
@@ -48,7 +78,7 @@ export class Render extends Component{
         document.querySelector('.game_body__main').innerHTML =''
         console.log('Clean Screen')
    
-    }
+    } // Очистка главного экрана
 
     bodyStyle(state){
         if(state){
@@ -61,7 +91,7 @@ export class Render extends Component{
 
 
 
-    updateCoordinate(){
+    updateCoordinate(){ // Обновление координат всех лимонов
         
         document.querySelectorAll('.lemon').forEach(item =>{
             let curentTop = item.style.top
@@ -74,8 +104,6 @@ export class Render extends Component{
             curentRotate +=1
             item.style.top = `${curentY}px`
             item.style.transform = `rotate(${curentRotate}deg)`
-
-            
             // console.log(curentY)
             
             if(curentY>260){
@@ -84,6 +112,7 @@ export class Render extends Component{
                 if(curentX >= curentPosBasket && curentX <= curentPosBasket+60) {
                     this.counterInit++
                     this.counterUpdate(this.counterInit)
+                    this.basketChangeColor()
                     document.querySelector('.game_body__main').removeChild(item)
 
                 }// -Проверка с позицией корзины
@@ -92,6 +121,7 @@ export class Render extends Component{
                 if(curentY>300){
                     document.querySelector('.game_body__main').removeChild(item)
                     this.counterLose++
+                    
                     console.log("Loose "+ this.counterLose)
                 }
                 
@@ -100,14 +130,11 @@ export class Render extends Component{
             
         })
 
-        // let b = new Date().getTime()
-        // console.log(b + "ms")
-
     }
 
     counterUpdate(count){
         document.querySelector('.game_body__counter').innerHTML=`Lemons: ${count}`
-    }
+    } // Обновление значения счетчика пойманных лемонов
 
     
 
@@ -127,9 +154,18 @@ export class Render extends Component{
     }
 
     initBasket(){
-        document.querySelector('.game_body__middle').innerHTML += `<div class="basket" data="basket" style="left:100px; bottom: 40px"></div>`
+        document.querySelector('.game_body__middle').innerHTML += `<div class="basket black" data="basket" style="left:100px; bottom: 40px"></div>`
         this.basketBindEvents()
         this.basketBindTouchEvents()
+    }
+    basketChangeColor(){
+        document.querySelector('.basket').classList.remove('black')
+        document.querySelector('.basket').classList.add('red')
+        setTimeout(()=>{
+            document.querySelector('.basket').classList.remove('red')
+            document.querySelector('.basket').classList.add('black')
+        }, 150)
+
     }
 
     deleteBasket(){
@@ -155,12 +191,10 @@ export class Render extends Component{
             dataMouse.startX = e.clientX
             dataMouse.startOffsetX = e.layerX
             dataMouse.curentPosX  = +basket.style.left.slice(0,-2)
-            // this.basketMove(basketTouch)
             this.bodyStyle(true)
         })
         basket.addEventListener('mouseup', ()=>{
             basketTouch = false
-            // this.basketMove(basketTouch)
             this.bodyStyle(false)
         })
 
@@ -180,7 +214,7 @@ export class Render extends Component{
 
     }
 
-    basketBindTouchEvents(){
+    basketBindTouchEvents(){ // Привязка событий Touch
         let basketTouch = false
         let dataTouch = {
             startX: 0,
@@ -225,13 +259,10 @@ export class Render extends Component{
 
         if(touch){
            touchCurentPos  = Math.floor(ev.touches[0].clientX)
-        //    console.log('Touchhh')
         } 
         
         if(!touch){
             touchCurentPos = ev.clientX
-            // console.log('Mouse')
-
         }
      
         
@@ -243,21 +274,21 @@ export class Render extends Component{
             calcBasketPosition = 240
         }
 
-
         // console.log(startPos.curentPosX + ev.clientX-startPos.startX )
         basket.style.left = `${calcBasketPosition}px`
-        
-       
 
     }
 
 
     continueGame(){
         this.gameStart = true
+        this.menuActive = false
+                   
         this.counterUpdate(this.counterInit)
        
         this.start()
         console.log('Continue Game ' + this.gameStart)
+        setTimeout(this.bindMenuEvents.bind(this), 0.5)
         
 
     }
@@ -265,19 +296,13 @@ export class Render extends Component{
     pauseGame(){
         console.log('Pause ' + this.gameStart)
         this.gameStart = false
-        
         console.log('Pause ' + this.gameStart)
-        // console.log('Mean ' + mean)
-        
-        
-        // setInterval(this.repeatI, 100)
-        // this.repeatI()  
-        
     }
 
     restartGame(){
         this.deleteBasket()
         this.cleanScreen()
+        this.menuActive = false
         this.gameStart = true
         this.counterInit = 0
         this.counterUpdate(this.counterInit)
@@ -285,16 +310,15 @@ export class Render extends Component{
         this.initBasket()
         this.start()
         console.log('Restart Game')
+        setTimeout(this.bindMenuEvents.bind(this), 0.5)
+        // this.bindMenuEvents()
+    }
+
+    registerComponent(component){
+        this.menuComponent = component
     }
 
     
-
-
-}
-
-function repeat(){
-
-    console.log("Hoope")
 
 
 }

@@ -36,7 +36,8 @@
     height: 30px;
     background-color: chartreuse;
 }
-.game_body__buttons {
+.menu {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
