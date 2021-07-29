@@ -19,8 +19,6 @@ export class Render extends Component{
         this.updateTimer;
         this.start();
         
-
-        
         
     }
 
