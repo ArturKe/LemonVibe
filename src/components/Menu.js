@@ -12,18 +12,28 @@ export class  Menu extends Component{
         this.start ="START"
         this.pause = "CONTINUE"
         this.restart = "RESTART"
-        this.init()
-        this.bindEvents()
+        this.show("start")
+        // this.bindEvents()
 
 
     }
-    init(){
-        if(!this.wasClicked){
-            document.querySelector('.menu__button').innerHTML = this.start
-        } else {
-            document.querySelector('.menu__button').innerHTML= this.pause
-            this.addButton(this.restart)
-        }
+
+    init(btns){
+        document.querySelector(this.class).innerHTML =''
+        btns.forEach(item => {
+            this.addButton(item)   
+        });
+        // if(!this.wasClicked){
+        //     document.querySelector('.menu__button').innerHTML = this.start
+        // } else {
+        //     document.querySelector('.menu__button').innerHTML= this.pause
+        //     this.addButton(this.restart)
+        // }
+    }
+
+    addButton(name){
+        document.querySelector(this.class).innerHTML +=`<button class="menu__button">${name}</button>`
+
     }
 
     bindEvents(){
@@ -64,13 +74,7 @@ export class  Menu extends Component{
             
         }
     }
-    addButton(name){
-        const elem = document.querySelector(this.class)
-        if(elem.children.length < 2){
-            elem.innerHTML +=`<button class="menu__button">${name}</button>`
-        }
-        
-    }
+    
 
     hide(){
         console.log('hide')
@@ -84,14 +88,24 @@ export class  Menu extends Component{
 
     }
 
-    show(){
+    show(state){
+        switch(state){
+            case 'start' : this.init([this.start]);
+            break;
+     
+            case 'pause' : this.init([this.pause, this.restart]);
+            break;
+    
+            case 'stop' : this.init([this.restart]);
+            break;
+        }   
+        
         console.log('Show component' + this.wasClicked)
-        this.init()
+        
         // console.log(this.target.classList)
         document.querySelector(this.class).classList.add('show')
         this.bindEvents()
-       
-        
     }
+    
 
 }

@@ -10,6 +10,7 @@ export class Render extends Component{
         this.width = width;
         this.heigt = height;
         this.menuComponent;
+        this.heartsCount = 5;
         this.menuActive = false;
         this.middleElem;
         this.func;
@@ -35,7 +36,7 @@ export class Render extends Component{
                 if(!this.menuActive){
                     this.menuActive = true
                     this.pauseGame()
-                    this.menuComponent.show()
+                    this.menuComponent.show("pause")
                     // this.middleElem.removeEventListener('click', this.func)
                     // console.log('Mennuuu Calll')
 
@@ -117,6 +118,12 @@ export class Render extends Component{
                 if(curentY > this.heigt){
                     document.querySelector('.game_body__main').removeChild(item)
                     this.counterLose++
+                    this.heartsCount--
+                    this.updateHearts()
+
+                    if(this.heartsCount === 0){
+                        this.stopGame()
+                    }
                     
                     console.log("Loose "+ this.counterLose)
                 }
@@ -133,7 +140,7 @@ export class Render extends Component{
 
     
 
-    initDraw(){
+    initDraw(){ // Добавляет один лемон 
         
         // this.counterInit++ //общее количество сгенерированных лемонов
         let randomLeft = Math.floor(Math.random()*(250-1)+1)
@@ -147,6 +154,26 @@ export class Render extends Component{
         // } //-Проверка по количеству блоков
         
     }
+
+    drawHeart(){
+        document.querySelector('.game_body__hearts').innerHTML += `<div class="heart" data="heart"></div>`
+    }
+
+    initDrawHearts(){
+        document.querySelector('.game_body__hearts').innerHTML =''
+        for(let i=0; i < this.heartsCount; i++){
+            this.drawHeart()
+        }
+    }
+
+    updateHearts(){
+        const allHearts = document.querySelectorAll('.heart')
+        if(allHearts.length > this.heartsCount) {
+            document.querySelector('.game_body__hearts').removeChild(allHearts[0])
+        }
+
+    }
+
 
     initBasket(){
         document.querySelector('.game_body__middle').innerHTML += `<div class="basket black" data="basket" style="left:120px; bottom: 40px"></div>`
@@ -276,6 +303,14 @@ export class Render extends Component{
 
     }
 
+    stopGame(){
+        this.gameStart = false
+        this.deleteBasket()
+        this.cleanScreen()
+        this.menuActive = true
+        this.menuComponent.show("stop")
+    }
+
 
     continueGame(){
         this.gameStart = true
@@ -304,7 +339,9 @@ export class Render extends Component{
         this.menuActive = false
         this.gameStart = true
         this.counterInit = 0
+        this.heartsCount = 5
         this.counterUpdate(this.counterInit)
+        this.initDrawHearts()
         this.initDraw()
         this.initBasket()
         // this.start()
