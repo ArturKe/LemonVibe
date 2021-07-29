@@ -27,23 +27,22 @@ export class  Menu extends Component{
     }
 
     bindEvents(){
-        // this.btn.addEventListener('click',this.clickEvent.bind(this))
-        document.querySelector('.menu__button').addEventListener('click',this.clickEvent.bind(this))
         document.querySelector(this.class).addEventListener('click',this.targetEvent.bind(this))
 
-    }
-
-    clickEvent(){
-        console.log('------------------------------MenuButton')
-        this.hide()
-       
     }
 
     targetEvent(e){
         if (e.target.innerText === this.restart){
             this.renderComponent.restartGame()
             this.hide()
-        }
+        } else
+        if (e.target.innerText === this.start){
+            this.hide()
+        } else
+        if (e.target.innerText === this.pause){
+            this.hide()
+            this.renderComponent.continueGame()
+        } 
 
     }
 

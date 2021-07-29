@@ -1,38 +1,45 @@
 import { Component } from "./component";
 
 export class Render extends Component{
-    constructor(target){
+    constructor(target,width = 300, height = 300){
         super(target)
         
         this.counterInit = 0;
         this.counterLose = 0;
         this.gameStart = false;
-        this.width = 300;
-        this.menuComponent
-        this.menuActive = false
-        this.middleElem
-        this.func
+        this.width = width;
+        this.heigt = height;
+        this.menuComponent;
+        this.menuActive = false;
+        this.middleElem;
+        this.func;
+        this.spawnInterval = 1200
+        this.updateCoordinateinteval = 20
+        this.spawnTimer;
+        this.updateTimer;
+        this.start();
+        
 
         
         
     }
 
     bindMenuEvents(){
-        console.log('Biiiiiind')
+        // console.log('Biiiiiind')
         this.middleElem = document.querySelector('.game_body__pause')
         this.func = this.menuEvent.bind(this)
         this.middleElem.addEventListener('click', this.func)
     }
 
-    menuEvent(e){
+    menuEvent(e){ // Нажатие на кнопку меню
        
             if(!e.target.classList.contains('basket')){
                 if(!this.menuActive){
                     this.menuActive = true
-                    console.log('Mennuuu Calll')
                     this.pauseGame()
                     this.menuComponent.show()
-                    this.middleElem.removeEventListener('click', this.func)
+                    // this.middleElem.removeEventListener('click', this.func)
+                    // console.log('Mennuuu Calll')
 
                 }
 
@@ -40,37 +47,28 @@ export class Render extends Component{
 
     }
     
-    start(){
+    start(){ // Инициализация счетчиков генерации лемоново и смещения их координат
 
         console.log('Starting')
         let funcSpawn = this.initDraw.bind(this)
         let funcUpdate = this.updateCoordinate.bind(this)
 
 
-        let spawnTimer = setInterval(()=>{
-            window.requestAnimationFrame(funcSpawn)
-            // console.log(spawnTimer)
-
-            // if(!this.gameStart){
-            //     console.log("Stop Spawn Lemons gameStrat is: " + this.gameStart )
-            //     clearInterval(spawnTimer) 
-            // }
-
-        }, 1200)
-
-        let initTimer = setInterval(()=>{
-            window.requestAnimationFrame(funcUpdate)
+        this.spawnTimer = setInterval(()=>{
+            if(this.gameStart){
+                window.requestAnimationFrame(funcSpawn)
+            }
             
-            if(!this.gameStart){
-                console.log("Stop Update Coordinate gameStrat is: " + this.gameStart )
-                clearInterval(initTimer)
-                clearInterval(spawnTimer) 
-                console.log("Init Timer is: " + initTimer)
-                console.log("Init Timer is: " + spawnTimer)
+        }, this.spawnInterval)
+
+        this.updateTimer = setInterval(()=>{
+            if(this.gameStart){
+                window.requestAnimationFrame(funcUpdate)  
+                // console.log("Init Timer is: " + spawnTimer)
                 
             }
 
-        }, 20)
+        }, this.updateCoordinateinteval)
 
     }
 
@@ -106,10 +104,10 @@ export class Render extends Component{
             item.style.transform = `rotate(${curentRotate}deg)`
             // console.log(curentY)
             
-            if(curentY>260){
+            if(curentY > this.heigt-40){
                 let basket = document.querySelector('.basket')
                 let curentPosBasket = +basket.style.left.slice(0,-2)
-                if(curentX >= curentPosBasket && curentX <= curentPosBasket+60) {
+                if(curentX >= curentPosBasket-20 && curentX <= curentPosBasket+50) {
                     this.counterInit++
                     this.counterUpdate(this.counterInit)
                     this.basketChangeColor()
@@ -118,7 +116,7 @@ export class Render extends Component{
                 }// -Проверка с позицией корзины
 
 
-                if(curentY>300){
+                if(curentY > this.heigt){
                     document.querySelector('.game_body__main').removeChild(item)
                     this.counterLose++
                     
@@ -154,9 +152,10 @@ export class Render extends Component{
     }
 
     initBasket(){
-        document.querySelector('.game_body__middle').innerHTML += `<div class="basket black" data="basket" style="left:100px; bottom: 40px"></div>`
+        document.querySelector('.game_body__middle').innerHTML += `<div class="basket black" data="basket" style="left:120px; bottom: 40px"></div>`
         this.basketBindEvents()
         this.basketBindTouchEvents()
+        this.basketChangeColor()
     }
     basketChangeColor(){
         document.querySelector('.basket').classList.remove('black')
@@ -241,6 +240,7 @@ export class Render extends Component{
 
         basket.addEventListener('touchmove',(e)=>{
             if(basketTouch){
+                e.preventDefault()
                 this.basketMove(true,dataTouch,e)
                 
             }
@@ -286,7 +286,7 @@ export class Render extends Component{
                    
         this.counterUpdate(this.counterInit)
        
-        this.start()
+        // this.start()
         console.log('Continue Game ' + this.gameStart)
         setTimeout(this.bindMenuEvents.bind(this), 0.5)
         
@@ -296,10 +296,12 @@ export class Render extends Component{
     pauseGame(){
         console.log('Pause ' + this.gameStart)
         this.gameStart = false
+       
         console.log('Pause ' + this.gameStart)
     }
 
     restartGame(){
+        
         this.deleteBasket()
         this.cleanScreen()
         this.menuActive = false
@@ -308,7 +310,7 @@ export class Render extends Component{
         this.counterUpdate(this.counterInit)
         this.initDraw()
         this.initBasket()
-        this.start()
+        // this.start()
         console.log('Restart Game')
         setTimeout(this.bindMenuEvents.bind(this), 0.5)
         // this.bindMenuEvents()
