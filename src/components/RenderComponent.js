@@ -13,8 +13,8 @@ export class Render extends Component{
         this.menuActive = false;
         this.middleElem;
         this.func;
-        this.spawnInterval = 1200
-        this.updateCoordinateinteval = 20
+        this.spawnInterval = 1200;
+        this.updateCoordinateinteval = 20;
         this.spawnTimer;
         this.updateTimer;
         this.start();
@@ -122,7 +122,6 @@ export class Render extends Component{
                     
                     console.log("Loose "+ this.counterLose)
                 }
-                
                 
             } //Проверка по координате Y 
             
