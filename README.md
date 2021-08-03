@@ -1,4 +1,4 @@
-<p align="center"><a href="https://arturke.github.io/Home_Projects/LemonVibe/dist/index.html"><img style = "width: 70%"src="https://github.com/ArturKe/LemonVibe/blob/main/src/img/screen_lemon.png"/></a></p>
+<p align="center"><a href="https://arturke.github.io/Home_Projects/LemonVibe/dist/index.html"><img src="https://github.com/ArturKe/LemonVibe/blob/main/src/img/screen_lemon.png"/></a></p>
 
 
 # LemonVibe
