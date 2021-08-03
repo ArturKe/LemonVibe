@@ -1,4 +1,3 @@
-import {Component} from './components/component'
 import { Render } from './components/RenderComponent'
 import { Menu } from './components/Menu'
 import './styles/style.css'

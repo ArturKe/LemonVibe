@@ -1,9 +1,6 @@
-import { Component } from "./component";
-
-export class Render extends Component{
+export class Render {
     constructor(target,width = 300, height = 300){
-        super(target)
-        
+        this.class = target
         this.counterInit = 0;
         this.counterLose = 0;
         this.gameStart = false;
@@ -18,6 +15,7 @@ export class Render extends Component{
         this.updateCoordinateinteval = 20;
         this.spawnTimer;
         this.updateTimer;
+
         this.start();
         
         
@@ -63,7 +61,6 @@ export class Render extends Component{
         this.updateTimer = setInterval(()=>{
             if(this.gameStart){
                 window.requestAnimationFrame(funcUpdate)  
-                // console.log("Init Timer is: " + spawnTimer)
                 
             }
 
@@ -125,7 +122,7 @@ export class Render extends Component{
                         this.stopGame()
                     }
                     
-                    console.log("Loose "+ this.counterLose)
+                    // console.log("Loose "+ this.counterLose)
                 }
                 
             } //Проверка по координате Y 
@@ -146,7 +143,7 @@ export class Render extends Component{
         let randomLeft = Math.floor(Math.random()*(250-1)+1)
         let randomRotate = Math.floor(Math.random()*(360-1)+1)
         document.querySelector('.game_body__main').innerHTML += `<div class="lemon" data="${this.counterInit}" style="left:${randomLeft}px; top: 0px; transform: rotate(${randomRotate}deg)"></div>`
-        console.log("Spawn Lemon")
+        // console.log("Spawn Lemon")
        
         // const allLemons = document.querySelectorAll('.lemon')
         // if(allLemons.length > 5){

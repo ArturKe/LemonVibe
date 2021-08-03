@@ -1,34 +1,23 @@
-import { Component } from "./component"
-
-export class  Menu extends Component{
-    constructor(target){
-        super(target)
-        
+export class  Menu {
+    constructor(target){ 
+        this.class = target
         this.renderComponent
-        // this.btn = target.querySelector('.menu__button')
         this.btn = document.querySelector('.menu__button')
-       
         this.wasClicked = false
         this.start ="START"
         this.pause = "CONTINUE"
         this.restart = "RESTART"
-        this.show("start")
-        // this.bindEvents()
 
+        this.show("start")
 
     }
 
-    init(btns){
+    init(btns){ // Отрисовка кнопок из переданного массива
         document.querySelector(this.class).innerHTML =''
         btns.forEach(item => {
             this.addButton(item)   
         });
-        // if(!this.wasClicked){
-        //     document.querySelector('.menu__button').innerHTML = this.start
-        // } else {
-        //     document.querySelector('.menu__button').innerHTML= this.pause
-        //     this.addButton(this.restart)
-        // }
+        
     }
 
     addButton(name){
@@ -77,7 +66,7 @@ export class  Menu extends Component{
     
 
     hide(){
-        console.log('hide')
+        // console.log('hide')
         document.querySelector(this.class).classList.remove('show')
         if(!this.wasClicked){
             this.startGame()
@@ -88,7 +77,7 @@ export class  Menu extends Component{
 
     }
 
-    show(state){
+    show(state){ // В зависимости от стейта отрисовывает меню с разным количеством кнопок
         switch(state){
             case 'start' : this.init([this.start]);
             break;
