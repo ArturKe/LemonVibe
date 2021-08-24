@@ -65,7 +65,7 @@
     position: absolute;
     width: 40px;
     height: 40px;
-    background: url('../img/food-lemon.png') center/cover no-repeat;
+    background: url('../img/food-lemon.png') center/contain no-repeat;
     z-index: 1;
     
 
